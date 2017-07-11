@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="vue.min.js"></script>
+</head>
+<body>
+
+<div id="calculator">
+    <div class="container">
+        <form action="">
+            <h1>Калькулятор</h1>
+            <p>Для менеджера</p>
+
+            <label for="colors">Цвет</label>
+            <select id="colors" type="number" name="colors" class="currency" v-model="selectedColor">
+                <option v-for="color in colors" v-bind:value="color.value">
+                    {{ color.text }}
+                </option>
+            </select>
+            <br/>
+            <label for="wide">Толщина</label>
+            <input id="wide" type="number" name="wide" class="currency" v-model="wide"/>
+            <br/>
+
+            <label for="weight">Масса</label>
+            <input id="weight" type="number" name="weight" class="currency" v-model="weight"/>
+            <br/>
+
+            <label for="gost">ТУ или ГОСТ</label>
+            <select id="gost" name="length" v-model="gost">
+                <option selected value="1">ТУ</option>
+                <option value="2">ГОСТ</option>
+            </select>
+        </form>
+        <div class="payment">{{ final }}</div>
+    </div>
+</div>
+
+<script>
+    'use strict';
+
+    var calculator = new Vue({
+        el: '#calculator',
+        data: {
+            selectedColor: '',
+            colors: [
+                {text: '1001', value: '4.9'},
+                {text: '1003', value: '6'},
+                {text: '1004', value: '7.5'},
+                {text: '1006', value: '8'},
+                {text: '1011', value: '4.6'},
+                {text: '1013', value: '4'},
+                {text: '1014', value: '4.1'},
+                {text: '1015', value: '4.1'},
+                {text: '1016', value: '11.77'},
+                {text: '1017', value: '5.95'},
+                {text: '1018', value: '6.6'},
+                {text: '1019', value: '4.35'},
+                {text: '1021', value: '6.32'},
+                {text: '1028', value: '9.2'},
+                {text: '1034', value: '6.85'},
+                {text: '1035', value: '8.7'},
+                {text: '1036', value: '9.3'},
+                {text: '1037', value: '7.53'},
+                {text: '2000', value: '9.1'},
+                {text: '2001', value: '6.3'},
+                {text: '2002', value: '7.2'},
+                {text: '2003', value: '8.1'},
+                {text: '2004', value: '9.6'},
+                {text: '2008', value: '8.5'},
+                {text: '2009', value: '8.4'},
+                {text: '2010', value: '7.5'},
+                {text: '2011', value: '8.2'},
+                {text: '2012', value: '6.55'},
+                {text: '3001', value: '7.6'},
+                {text: '3002', value: '7.2'},
+                {text: '3003', value: '7.9'},
+                {text: '3004', value: '6.15'},
+                {text: '3005', value: '5.3'},
+                {text: '3007', value: '6.58'},
+                {text: '3009', value: '4.46'},
+                {text: '3011', value: '5.2'},
+                {text: '3012', value: '5.1'},
+                {text: '3013', value: '5.9'},
+                {text: '3016', value: '7.1'},
+                {text: '3020', value: '7.9'},
+                {text: '3022', value: '7.15'},
+                {text: '3031', value: '7.55'},
+                {text: '4001', value: '7.75'},
+                {text: '5002', value: '5.8'},
+                {text: '5003', value: '5.7'},
+                {text: '5004', value: '5.8'},
+                {text: '5005', value: '4.55'},
+                {text: '5007', value: '5.04'},
+                {text: '5008', value: '5.8'},
+                {text: '5010', value: '5.2'},
+                {text: '5012', value: '5.4'},
+                {text: '5015', value: '4.8'},
+                {text: '5017', value: '5.17'},
+                {text: '5018', value: '5.3'},
+                {text: '5019', value: '4'},
+                {text: '5021', value: '5.2'},
+                {text: '5023', value: '5.3'},
+                {text: '5024', value: '5.69'},
+                {text: '6000', value: '4.5'},
+                {text: '6001', value: '6.1'},
+                {text: '6002', value: '4.5'},
+                {text: '6003', value: '4.95'},
+                {text: '6005', value: '4.4'},
+                {text: '6006', value: '5.1'},
+                {text: '6009', value: '5.5'},
+                {text: '6010', value: '5.15'},
+                {text: '6011', value: '5.87'},
+                {text: '6018', value: '5'},
+                {text: '6019', value: '5'},
+                {text: '6020', value: '5.89'},
+                {text: '6024', value: '5.8'},
+                {text: '6026', value: '5.7'},
+                {text: '6027', value: '5.3'},
+                {text: '6028', value: '5.63'},
+                {text: '6029', value: '5.4'},
+                {text: '6033', value: '5.3'},
+                {text: '6034', value: '5.1'},
+                {text: '6037', value: '7.91'},
+                {text: '7000', value: '4.5'},
+                {text: '7001', value: '4.25'},
+                {text: '7002', value: '5.65'},
+                {text: '7004', value: '4.1'},
+                {text: '7005', value: '4.3'},
+                {text: '7006', value: '4.3'},
+                {text: '7011', value: '4.5'},
+                {text: '7012', value: '4.4'},
+                {text: '7015', value: '4.4'},
+                {text: '7016', value: '4.3'},
+                {text: '7021', value: '5.53'},
+                {text: '7024', value: '4.3'},
+                {text: '7030', value: '5.7'},
+                {text: '7031', value: '4.4'},
+                {text: '7032', value: '4.3'},
+                {text: '7035', value: '4.1'},
+                {text: '7036', value: '4.4'},
+                {text: '7037', value: '4.2'},
+                {text: '7038', value: '4.3'},
+                {text: '7040', value: '4.3'},
+                {text: '7042', value: '4.3'},
+                {text: '7043', value: '4.3'},
+                {text: '7044', value: '4.4'},
+                {text: '7045', value: '4.45'},
+                {text: '7047', value: '4.4'},
+                {text: '7048', value: '7.8'},
+                {text: '8001', value: '5.3'},
+                {text: '8002', value: '4.4'},
+                {text: '8003', value: '5.82'},
+                {text: '8004', value: '5.78'},
+                {text: '8011', value: '5.3'},
+                {text: '8014', value: '4.5'},
+                {text: '8017', value: '4.1'},
+                {text: '8019', value: '5.2'},
+                {text: '8022', value: '4.7'},
+                {text: '8023', value: '6.58'},
+                {text: '8024', value: '4.3'},
+                {text: '8025', value: '4.8'},
+                {text: '8028', value: '5.6'},
+                {text: '9001', value: '4.15'},
+                {text: '9002', value: '3.9'},
+                {text: '9003', value: '3.9'},
+                {text: '9004', value: '4.7'},
+                {text: '9005', value: '4.6'},
+                {text: '9006', value: '4.93'},
+                {text: '9007', value: '5.9'},
+                {text: '9010', value: '3.95'},
+                {text: '9011', value: '5.2'},
+                {text: '9016', value: '3.95'},
+                {text: '9018', value: '4.2'}
+            ],
+            wide: '',
+            weight: '',
+            gost: '1'
+        },
+        computed: {
+            final: function () {
+                var rate = 60, // Курс валюты
+                    ratePlus = 1.18,
+                    color = this.selectedColor,
+                    wide = this.wide,
+                    weight = this.weight,
+                    gost = this.gost;
+
+                var first = rate + ratePlus + color + wide + weight + gost;
+
+                return first;
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>
