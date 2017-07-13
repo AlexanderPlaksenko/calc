@@ -11,45 +11,50 @@
 
 <body>
 
-    <div id="calculator">
-        <div class="container">
-            <form action="">
-                <h1>Калькулятор</h1>
-                <p>Для менеджера</p>
+<div id="calculator">
+    <div class="container">
+        <form action="">
+            <h1>Калькулятор</h1>
+            <p>Для менеджера</p>
 
-                <label class="label" for="colors">Цвет</label>
-                <select id="colors" type="number" name="colors" class="currency" v-model="selectedColor">
+            <label class="label" for="colors">Цвет</label>
+            <select id="colors" type="number" name="colors" class="currency" v-model.number="selectedColor">
                 <option v-for="color in colors" v-bind:value="color.value">
                     {{ color.text }}
                 </option>
             </select>
-                <br/>
-                <label class="label" for="wide">Толщина</label>
-                <input id="wide" type="number" name="wide" class="currency" v-model="wide" />
-                <br/>
+            <br/>
+            <label class="label" for="wides">Толщина</label>
+            <select id="wides" type="number" name="wides" class="currency" v-model.number="selectedWide">
+                <option v-for="wide in wides" v-bind:value="wide.value">
+                    {{ wide.text }}
+                </option>
+            </select>
+            <br/>
 
-                <label class="label" for="weight">Масса</label>
-                <input id="weight" type="number" name="weight" class="currency" v-model="weight" />
-                <br/>
+            <label class="label" for="weight">Масса</label>
+            <input id="weight" type="number" name="weight" class="currency" v-model.number="weight"/>
+            <br/>
 
-                <input type="radio" id="tu" value="tu" v-model="gost">
-                <label for="tu">ТУ</label>
-                <br>
-                <input type="radio" id="gost" value="gost" v-model="gost">
-                <label for="gost">ГОСТ</label>
-            </form>
-            <div class="payment">{{ final }}</div>
-        </div>
+            <input type="radio" id="tu" value="tu" v-model.number="gost">
+            <label for="tu">ТУ</label>
+            <br>
+            <input type="radio" id="gost" value="gost" v-model.number="gost">
+            <label for="gost">ГОСТ</label>
+        </form>
+        <div class="payment">{{ final }}</div>
     </div>
+</div>
 
-    <script>
-        'use strict';
+<script>
+    'use strict';
 
-        var calculator = new Vue({
+    var calculator = new Vue({
             el: '#calculator',
             data: {
                 selectedColor: '',
-                colors: [{
+                colors: [
+                    {
                         text: '1001',
                         value: '4.9'
                     },
@@ -562,7 +567,73 @@
                         value: '4.2'
                     }
                 ],
-                wide: '',
+                selectedWide: '',
+                wides: [
+                    {
+                        text: '0.35',
+                        value: '52000'
+                    },
+                    {
+                        text: '0.38',
+                        value: '52000'
+                    },
+                    {
+                        text: '0.4',
+                        value: '51300'
+                    },
+                    {
+                        text: '0.43',
+                        value: '49700'
+                    },
+                    {
+                        text: '0.45',
+                        value: '49400'
+                    },
+                    {
+                        text: '0.47',
+                        value: '49400'
+                    },
+                    {
+                        text: '0.5',
+                        value: '48300'
+                    },
+                    {
+                        text: '0.55',
+                        value: '48300'
+                    },
+                    {
+                        text: '0.57',
+                        value: '48300'
+                    },
+                    {
+                        text: '0.6',
+                        value: '48100'
+                    },
+                    {
+                        text: '0.65',
+                        value: '48100'
+                    },
+                    {
+                        text: '0.7',
+                        value: '48100'
+                    },
+                    {
+                        text: '0.75',
+                        value: '48100'
+                    },
+                    {
+                        text: '0.8',
+                        value: '46700'
+                    },
+                    {
+                        text: '0.9',
+                        value: '466'
+                    },
+                    {
+                        text: '1',
+                        value: '466'
+                    }
+                ],
                 weight: '',
                 gost: 'tu'
             },
@@ -571,16 +642,16 @@
                     var rate = 65, // Курс валюты
                         ratePlus = 1.18,
                         color = this.selectedColor,
-                        wide = this.wide,
+                        wide = this.selectedWide,
                         weight = this.weight,
                         gost = this.gost,
 
-                        emalKG = 3.42,
-                        gruntKG = 4.31;
+                        gruntKG = 4.31,
+                        emalKG = 3.42;
 
-                    var RAL = (rate * color) * ratePlus;
-                    var grunt = (rate * gruntKG) * ratePlus;
-                    var emal = (rate * emalKG) * ratePlus;
+                    var RAL = rate * color * ratePlus;
+                    var grunt = rate * gruntKG * ratePlus;
+                    var emal = rate * emalKG * ratePlus;
 
                     if (gost == 'tu') {
                         var RALkgm = 0.038;
@@ -592,13 +663,31 @@
                         var grunhkgm = 0.025;
                         var emailkgm = 0.0195;
                     }
-                    console.log(RALkgm);
 
-                    return RAL
+                    var pogMETR = 1000 / (0.57 * 1.25 * 7.8 * 0.985);
+                    var RALkgt = (RALkgm * 1000) / (7.8 * 0.57);
+                    var grunhkgt = (grunhkgm * 1000) / (7.8 * 0.57);
+                    var emailkgt = (emailkgm * 1000) / (7.8 * 0.57);
+
+                    var RALCostt = RALkgt * RAL;
+                    var gruntCostt = grunhkgt * grunt;
+                    var emalCostt = emailkgt * emal;
+
+                    var allNDS = RALCostt + gruntCostt + emalCostt;
+                    var premiaHand = 22.57;
+                    var premia = premiaHand * pogMETR;
+                    var emal65 = color * 65 * rate;
+                    var anotherColor = emal65 / weight;
+
+                    var preFinal = allNDS + premia + anotherColor;
+                    var final = wide + preFinal + 1200 + 2000;
+
+                    return Math.round(final);
                 }
             }
-        });
-    </script>
+        })
+    ;
+</script>
 
 </body>
 
