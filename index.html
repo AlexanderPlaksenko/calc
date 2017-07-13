@@ -578,18 +578,23 @@
                         emalKG = 3.42,
                         gruntKG = 4.31;
 
-                    if (gost = 'tu') {
-                        var RAL = ((rate * color) * ratePlus) * 0.0195;
-                        var grunt = ((rate * gruntKG) * ratePlus) * 0.013;
-                        var emal = ((rate * emalKG) * ratePlus) * 0.038;
-                        return RAL;
+                    var RAL = (rate * color) * ratePlus;
+                    var grunt = (rate * gruntKG) * ratePlus;
+                    var emal = (rate * emalKG) * ratePlus;
+
+                    if (gost == 'tu') {
+                        var RALkgm = 0.038;
+                        var grunhkgm = 0.013;
+                        var emailkgm = 0.0195;
                     }
-                    if (gost = 'gost') {
-                        var RAL = ((rate * color) * ratePlus) * 0.055;
-                        var grunt = ((rate * gruntKG) * ratePlus) * 0.025;
-                        var emal = ((rate * emalKG) * ratePlus) * 0.0195;
-                        return RAL;
+                    if (gost == 'gost') {
+                        var RALkgm = 0.055;
+                        var grunhkgm = 0.025;
+                        var emailkgm = 0.0195;
                     }
+                    console.log(RALkgm);
+
+                    return RAL
                 }
             }
         });
